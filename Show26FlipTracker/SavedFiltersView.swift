@@ -319,8 +319,8 @@ struct PresetEditSheet: View {
     @State private var selectedRarity: ListingRarity?
     @State private var selectedPosition: DisplayPosition?
     @State private var selectedSeriesId: Int?
-    @State private var minSellPrice: String = ""
-    @State private var maxSellPrice: String = ""
+    @State private var minBuyPrice: String = ""
+    @State private var maxBuyPrice: String = ""
     @State private var minOverall: String = ""
     @State private var maxOverall: String = ""
     @State private var minProfitPerMinute: String = ""
@@ -334,8 +334,8 @@ struct PresetEditSheet: View {
         _selectedRarity = State(initialValue: preset?.rarity)
         _selectedPosition = State(initialValue: preset?.position)
         _selectedSeriesId = State(initialValue: preset?.seriesId)
-        _minSellPrice = State(initialValue: preset?.minSellPrice.map(String.init) ?? "")
-        _maxSellPrice = State(initialValue: preset?.maxSellPrice.map(String.init) ?? "")
+        _minBuyPrice = State(initialValue: preset?.minBuyPrice.map(String.init) ?? "")
+        _maxBuyPrice = State(initialValue: preset?.maxBuyPrice.map(String.init) ?? "")
         _minOverall = State(initialValue: preset?.minOverall.map(String.init) ?? "")
         _maxOverall = State(initialValue: preset?.maxOverall.map(String.init) ?? "")
         _minProfitPerMinute = State(initialValue: preset?.minProfitPerMinute.map { String(format: "%.0f", $0) } ?? "")
@@ -478,11 +478,11 @@ struct PresetEditSheet: View {
 
     private var priceSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            sectionHeader("SELL PRICE RANGE (STUBS)")
+            sectionHeader("BUY PRICE RANGE (STUBS)")
             HStack(spacing: 12) {
-                styledField(placeholder: "Min", text: $minSellPrice)
+                styledField(placeholder: "Min", text: $minBuyPrice)
                 Text("—").foregroundStyle(Color.textTertiary)
-                styledField(placeholder: "Max", text: $maxSellPrice)
+                styledField(placeholder: "Max", text: $maxBuyPrice)
             }
         }
     }
@@ -572,8 +572,8 @@ struct PresetEditSheet: View {
             rarity: selectedRarity,
             position: selectedPosition,
             seriesId: selectedSeriesId,
-            minSellPrice: Int(minSellPrice),
-            maxSellPrice: Int(maxSellPrice),
+            minBuyPrice: Int(minBuyPrice),
+            maxBuyPrice: Int(maxBuyPrice),
             minOverall: Int(minOverall),
             maxOverall: Int(maxOverall),
             minProfitPerMinute: Double(minProfitPerMinute),

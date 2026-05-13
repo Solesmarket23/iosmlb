@@ -120,12 +120,12 @@ struct FilterSheetView: View {
 
     private var priceSection: some View {
         VStack(alignment: .leading, spacing: 14) {
-            sectionHeader("SELL PRICE RANGE (STUBS)")
+            sectionHeader("BUY PRICE RANGE (STUBS)")
             HStack(spacing: 12) {
-                styledField(placeholder: "Min", text: $model.minSellStubs)
+                styledField(placeholder: "Min", text: $model.minBuyStubs)
                 Text("—")
                     .foregroundStyle(Color.textTertiary)
-                styledField(placeholder: "Max", text: $model.maxSellStubs)
+                styledField(placeholder: "Max", text: $model.maxBuyStubs)
             }
         }
     }
@@ -252,8 +252,8 @@ struct FilterSheetView: View {
                     model.selectedRarity = nil
                     model.selectedPosition = nil
                     model.selectedSeriesId = nil
-                    model.minSellStubs = ""
-                    model.maxSellStubs = ""
+                    model.minBuyStubs = ""
+                    model.maxBuyStubs = ""
                     model.minOverallStr = ""
                     model.maxOverallStr = ""
                 }
@@ -311,8 +311,8 @@ struct FilterSheetView: View {
             rarity: model.selectedRarity,
             position: model.selectedPosition,
             seriesId: model.selectedSeriesId,
-            minSellPrice: Int(model.minSellStubs),
-            maxSellPrice: Int(model.maxSellStubs),
+            minBuyPrice: Int(model.minBuyStubs),
+            maxBuyPrice: Int(model.maxBuyStubs),
             minOverall: Int(model.minOverallStr),
             maxOverall: Int(model.maxOverallStr),
             notificationsEnabled: false

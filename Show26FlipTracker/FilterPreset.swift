@@ -7,8 +7,8 @@ struct FilterPreset: Identifiable, Codable, Equatable {
     var rarity: ListingRarity?
     var position: DisplayPosition?
     var seriesId: Int?
-    var minSellPrice: Int?
-    var maxSellPrice: Int?
+    var minBuyPrice: Int?
+    var maxBuyPrice: Int?
     var minOverall: Int?
     var maxOverall: Int?
     var minProfitPerMinute: Double?
@@ -20,8 +20,8 @@ struct FilterPreset: Identifiable, Codable, Equatable {
         rarity: ListingRarity? = nil,
         position: DisplayPosition? = nil,
         seriesId: Int? = nil,
-        minSellPrice: Int? = nil,
-        maxSellPrice: Int? = nil,
+        minBuyPrice: Int? = nil,
+        maxBuyPrice: Int? = nil,
         minOverall: Int? = nil,
         maxOverall: Int? = nil,
         minProfitPerMinute: Double? = nil,
@@ -32,8 +32,8 @@ struct FilterPreset: Identifiable, Codable, Equatable {
         self.rarity = rarity
         self.position = position
         self.seriesId = seriesId
-        self.minSellPrice = minSellPrice
-        self.maxSellPrice = maxSellPrice
+        self.minBuyPrice = minBuyPrice
+        self.maxBuyPrice = maxBuyPrice
         self.minOverall = minOverall
         self.maxOverall = maxOverall
         self.minProfitPerMinute = minProfitPerMinute
@@ -44,7 +44,7 @@ struct FilterPreset: Identifiable, Codable, Equatable {
         var parts: [String] = []
         if let r = rarity { parts.append(r.rawValue.capitalized) }
         if let p = position { parts.append(p.displayName) }
-        if let max = maxSellPrice { parts.append("≤\(max) stubs") }
+        if let max = maxBuyPrice { parts.append("≤\(max) buy") }
         if let min = minOverall { parts.append("≥\(min) OVR") }
         if let minPPM = minProfitPerMinute { parts.append("≥\(Int(minPPM))/min") }
         return parts.isEmpty ? "No filters" : parts.joined(separator: " · ")
@@ -53,8 +53,8 @@ struct FilterPreset: Identifiable, Codable, Equatable {
     func matches(_ listing: MarketListing) -> Bool {
         if let r = rarity, listing.item?.rarity?.lowercased() != r.rawValue { return false }
         if let p = position, listing.item?.displayPosition != p.rawValue { return false }
-        if let minPrice = minSellPrice, (listing.bestSellPrice.intValue ?? 0) < minPrice { return false }
-        if let maxPrice = maxSellPrice, (listing.bestSellPrice.intValue ?? Int.max) > maxPrice { return false }
+        if let minPrice = minBuyPrice, (listing.bestBuyPrice.intValue ?? 0) < minPrice { return false }
+        if let maxPrice = maxBuyPrice, (listing.bestBuyPrice.intValue ?? Int.max) > maxPrice { return false }
         if let minOvr = minOverall, (listing.item?.ovr ?? 0) < minOvr { return false }
         if let maxOvr = maxOverall, (listing.item?.ovr ?? Int.max) > maxOvr { return false }
         return true

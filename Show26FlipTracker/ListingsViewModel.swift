@@ -12,8 +12,8 @@ final class ListingsViewModel {
     var selectedRarity: ListingRarity?
     var selectedPosition: DisplayPosition?
     var selectedSeriesId: Int?
-    var minSellStubs: String = ""
-    var maxSellStubs: String = ""
+    var minBuyStubs: String = ""
+    var maxBuyStubs: String = ""
     var minOverallStr: String = ""
     var maxOverallStr: String = ""
     var metaData: MetaData?
@@ -110,16 +110,16 @@ final class ListingsViewModel {
         let previousUUIDs = Set(listings.compactMap { $0.item?.uuid })
 
         do {
-            let minSell = Int(minSellStubs.trimmingCharacters(in: .whitespaces))
-            let maxSell = Int(maxSellStubs.trimmingCharacters(in: .whitespaces))
+            let minBuy = Int(minBuyStubs.trimmingCharacters(in: .whitespaces))
+            let maxBuy = Int(maxBuyStubs.trimmingCharacters(in: .whitespaces))
             let all = try await client.fetchAllListings(
                 sort: .bestSellPrice,
                 order: .desc,
                 rarity: selectedRarity,
                 position: selectedPosition,
                 seriesId: selectedSeriesId,
-                minBestSellPrice: minSell,
-                maxBestSellPrice: maxSell,
+                minBestBuyPrice: minBuy,
+                maxBestBuyPrice: maxBuy,
                 maxPages: 20
             )
             listings = all
@@ -230,8 +230,8 @@ final class ListingsViewModel {
             }
 
             do {
-                let minSell = Int(minSellStubs.trimmingCharacters(in: .whitespaces))
-                let maxSell = Int(maxSellStubs.trimmingCharacters(in: .whitespaces))
+                let minBuy = Int(minBuyStubs.trimmingCharacters(in: .whitespaces))
+                let maxBuy = Int(maxBuyStubs.trimmingCharacters(in: .whitespaces))
                 
                 // Track previous cards for notification checking
                 let previousUUIDs = Set(listings.compactMap { $0.item?.uuid })
@@ -245,8 +245,8 @@ final class ListingsViewModel {
                     rarity: selectedRarity,
                     position: selectedPosition,
                     seriesId: selectedSeriesId,
-                    minBestSellPrice: minSell,
-                    maxBestSellPrice: maxSell,
+                    minBestBuyPrice: minBuy,
+                    maxBestBuyPrice: maxBuy,
                     maxPages: 20
                 )
                 
@@ -287,8 +287,8 @@ final class ListingsViewModel {
         defer { isLoading = false }
 
         do {
-            let minSell = Int(minSellStubs.trimmingCharacters(in: .whitespaces))
-            let maxSell = Int(maxSellStubs.trimmingCharacters(in: .whitespaces))
+            let minBuy = Int(minBuyStubs.trimmingCharacters(in: .whitespaces))
+            let maxBuy = Int(maxBuyStubs.trimmingCharacters(in: .whitespaces))
             let result = try await client.fetchListings(
                 page: page,
                 sort: .bestSellPrice,
@@ -296,8 +296,8 @@ final class ListingsViewModel {
                 rarity: selectedRarity,
                 position: selectedPosition,
                 seriesId: selectedSeriesId,
-                minBestSellPrice: minSell,
-                maxBestSellPrice: maxSell
+                minBestBuyPrice: minBuy,
+                maxBestBuyPrice: maxBuy
             )
             listings = result.listings
             totalPages = result.totalPages
@@ -333,8 +333,8 @@ final class ListingsViewModel {
         selectedRarity = preset.rarity
         selectedPosition = preset.position
         selectedSeriesId = preset.seriesId
-        minSellStubs = preset.minSellPrice.map(String.init) ?? ""
-        maxSellStubs = preset.maxSellPrice.map(String.init) ?? ""
+        minBuyStubs = preset.minBuyPrice.map(String.init) ?? ""
+        maxBuyStubs = preset.maxBuyPrice.map(String.init) ?? ""
         minOverallStr = preset.minOverall.map(String.init) ?? ""
         maxOverallStr = preset.maxOverall.map(String.init) ?? ""
         Task { await loadAll() }
@@ -344,8 +344,8 @@ final class ListingsViewModel {
         selectedRarity = nil
         selectedPosition = nil
         selectedSeriesId = nil
-        minSellStubs = ""
-        maxSellStubs = ""
+        minBuyStubs = ""
+        maxBuyStubs = ""
         minOverallStr = ""
         maxOverallStr = ""
         Task { await loadAll() }

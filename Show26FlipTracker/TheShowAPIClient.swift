@@ -79,8 +79,8 @@ actor TheShowAPIClient {
         rarity: ListingRarity? = nil,
         position: DisplayPosition? = nil,
         seriesId: Int? = nil,
-        minBestSellPrice: Int? = nil,
-        maxBestSellPrice: Int? = nil
+        minBestBuyPrice: Int? = nil,
+        maxBestBuyPrice: Int? = nil
     ) async throws -> ListingsPage {
         var items: [URLQueryItem] = [
             URLQueryItem(name: "type", value: "mlb_card"),
@@ -97,11 +97,11 @@ actor TheShowAPIClient {
         if let seriesId {
             items.append(URLQueryItem(name: "series_id", value: String(seriesId)))
         }
-        if let minBestSellPrice {
-            items.append(URLQueryItem(name: "min_best_sell_price", value: String(minBestSellPrice)))
+        if let minBestBuyPrice {
+            items.append(URLQueryItem(name: "min_best_buy_price", value: String(minBestBuyPrice)))
         }
-        if let maxBestSellPrice {
-            items.append(URLQueryItem(name: "max_best_sell_price", value: String(maxBestSellPrice)))
+        if let maxBestBuyPrice {
+            items.append(URLQueryItem(name: "max_best_buy_price", value: String(maxBestBuyPrice)))
         }
 
         var components = URLComponents(url: baseURL.appendingPathComponent("apis/listings.json"), resolvingAgainstBaseURL: false)!
@@ -123,8 +123,8 @@ actor TheShowAPIClient {
         rarity: ListingRarity? = nil,
         position: DisplayPosition? = nil,
         seriesId: Int? = nil,
-        minBestSellPrice: Int? = nil,
-        maxBestSellPrice: Int? = nil,
+        minBestBuyPrice: Int? = nil,
+        maxBestBuyPrice: Int? = nil,
         maxPages: Int = 50
     ) async throws -> [MarketListing] {
         let firstPage = try await fetchListings(
@@ -134,8 +134,8 @@ actor TheShowAPIClient {
             rarity: rarity,
             position: position,
             seriesId: seriesId,
-            minBestSellPrice: minBestSellPrice,
-            maxBestSellPrice: maxBestSellPrice
+            minBestBuyPrice: minBestBuyPrice,
+            maxBestBuyPrice: maxBestBuyPrice
         )
 
         var allListings = firstPage.listings
@@ -153,8 +153,8 @@ actor TheShowAPIClient {
                         rarity: rarity,
                         position: position,
                         seriesId: seriesId,
-                        minBestSellPrice: minBestSellPrice,
-                        maxBestSellPrice: maxBestSellPrice
+                        minBestBuyPrice: minBestBuyPrice,
+                        maxBestBuyPrice: maxBestBuyPrice
                     )
                     return pageResult.listings
                 }

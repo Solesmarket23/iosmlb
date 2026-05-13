@@ -162,7 +162,7 @@ struct MarketView: View {
             HStack(spacing: 5) {
                 Image(systemName: "slider.horizontal.3")
                     .font(.system(size: 13, weight: .semibold))
-                if model.selectedRarity != nil || !model.minSellStubs.isEmpty || model.selectedPosition != nil {
+                if model.selectedRarity != nil || !model.minBuyStubs.isEmpty || model.selectedPosition != nil {
                     Circle()
                         .fill(Color.appAccent)
                         .frame(width: 6, height: 6)

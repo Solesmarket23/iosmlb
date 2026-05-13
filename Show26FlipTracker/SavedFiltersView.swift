@@ -234,7 +234,7 @@ struct SavedFiltersView: View {
     }
 }
 
-private struct PresetRow: View {
+struct PresetRow: View {
     let preset: FilterPreset
     let onTap: () -> Void
     let onEdit: () -> Void
@@ -309,7 +309,7 @@ private struct PresetRow: View {
     }
 }
 
-private struct PresetEditSheet: View {
+struct PresetEditSheet: View {
     let preset: FilterPreset?
     let onSave: (FilterPreset) -> Void
     let metaData: MetaData?

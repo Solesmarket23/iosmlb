@@ -4,6 +4,7 @@ struct FlipsView: View {
     @Bindable var model: ListingsViewModel
     @State private var presetManager: PresetManager
     @State private var showFilter = false
+    @State private var showPresets = false
     @State private var selectedOpportunity: FlipOpportunity?
     @State private var headerAppeared = false
 
@@ -33,6 +34,9 @@ struct FlipsView: View {
         .sheet(isPresented: $showFilter) {
             FilterSheetView(model: model, presetManager: presetManager, onApply: { model.applyFilters() })
         }
+        .sheet(isPresented: $showPresets) {
+            PresetListSheet(presetManager: presetManager, model: model)
+        }
         .sheet(item: $selectedOpportunity) { opportunity in
             CardDetailSheet(opportunity: opportunity)
         }
@@ -53,6 +57,7 @@ struct FlipsView: View {
                 Spacer()
                 HStack(spacing: 10) {
                     refreshButton
+                    presetsButton
                     filterButton
                 }
             }
@@ -122,6 +127,31 @@ struct FlipsView: View {
             model.isLoading ? .linear(duration: 0.9).repeatForever(autoreverses: false) : .default,
             value: model.isLoading
         )
+    }
+    
+    private var presetsButton: some View {
+        Button {
+            Haptics.light()
+            showPresets = true
+        } label: {
+            HStack(spacing: 5) {
+                Image(systemName: "bookmark.fill")
+                    .font(.system(size: 13, weight: .semibold))
+                if !presetManager.presets.isEmpty {
+                    Text("\(presetManager.presets.count)")
+                        .font(.system(size: 11, weight: .bold))
+                }
+            }
+            .foregroundStyle(Color.appAccent)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 10)
+            .background(Color.appSurface, in: Capsule())
+            .overlay(
+                Capsule()
+                    .strokeBorder(Color.appAccent.opacity(0.25), lineWidth: 1)
+            )
+        }
+        .buttonStyle(PressScaleEffect())
     }
 
     private var filterButton: some View {

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,6 +19,7 @@
 		B781A50CF5C6F050768F68A7 /* CardTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63988561C708CD4025F75039 /* CardTileView.swift */; };
 		BA38744C5188F3BD32DF54C3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15A8E453ADE0C58851C9206 /* ContentView.swift */; };
 		C3516B519E5117A2DF411ADA /* TheShowAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886661699C4A9591FD951EF2 /* TheShowAPIClient.swift */; };
+		D3508FC8BBEA215100887CA3 /* PresetListSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C938DB642820D56CED8C1D5B /* PresetListSheet.swift */; };
 		DAB29696E40904BE698173A6 /* Show26FlipTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8A5352FFCB6AC110AA0EDE /* Show26FlipTrackerApp.swift */; };
 		EE8AB9A3ED8254AB806B88CE /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63C6959CBC4E890747E38C5 /* Models.swift */; };
 		FC13888B22433954EE3EEB5E /* FilterPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AFB6C161821228CD1C6C5C /* FilterPreset.swift */; };
@@ -27,7 +28,7 @@
 /* Begin PBXFileReference section */
 		01D1A8AFC28B52FF6F7FD12D /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		0C340EE8639B847E364F022B /* SavedFiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedFiltersView.swift; sourceTree = "<group>"; };
-		0DFF8466BC4CD069E601A375 /* Show26FlipTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Show26FlipTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0DFF8466BC4CD069E601A375 /* Show26FlipTracker.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Show26FlipTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A7695DB8E840707FC69A489 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		4919B8919C09119E69E46178 /* FilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetView.swift; sourceTree = "<group>"; };
 		4F63600E87B5250C937EEF07 /* ListingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsViewModel.swift; sourceTree = "<group>"; };
@@ -39,6 +40,7 @@
 		886661699C4A9591FD951EF2 /* TheShowAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheShowAPIClient.swift; sourceTree = "<group>"; };
 		9740D13A37CC3B3BE9797E36 /* RosterUpdatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosterUpdatesView.swift; sourceTree = "<group>"; };
 		A63C6959CBC4E890747E38C5 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		C938DB642820D56CED8C1D5B /* PresetListSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetListSheet.swift; sourceTree = "<group>"; };
 		D15A8E453ADE0C58851C9206 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FB0B6F4EFF4F91D0D8954184 /* FlipsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -66,6 +68,7 @@
 				71D58CA7BBD0A74A4E1A3D40 /* MarketView.swift */,
 				A63C6959CBC4E890747E38C5 /* Models.swift */,
 				3A7695DB8E840707FC69A489 /* NotificationManager.swift */,
+				C938DB642820D56CED8C1D5B /* PresetListSheet.swift */,
 				9740D13A37CC3B3BE9797E36 /* RosterUpdatesView.swift */,
 				0C340EE8639B847E364F022B /* SavedFiltersView.swift */,
 				7F8A5352FFCB6AC110AA0EDE /* Show26FlipTrackerApp.swift */,
@@ -126,6 +129,7 @@
 			);
 			mainGroup = 7DA2DBD5DADC380737638E6E;
 			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -150,6 +154,7 @@
 				1890CF464F39043D2880FD17 /* MarketView.swift in Sources */,
 				EE8AB9A3ED8254AB806B88CE /* Models.swift in Sources */,
 				B508677501267AC6CFC38DFD /* NotificationManager.swift in Sources */,
+				D3508FC8BBEA215100887CA3 /* PresetListSheet.swift in Sources */,
 				B10EA3F7F8BDCC1737F301CE /* RosterUpdatesView.swift in Sources */,
 				7E16EC543BFA576B664264BA /* SavedFiltersView.swift in Sources */,
 				DAB29696E40904BE698173A6 /* Show26FlipTrackerApp.swift in Sources */,
@@ -166,7 +171,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3SFYC3VA37;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -243,7 +247,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3SFYC3VA37;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

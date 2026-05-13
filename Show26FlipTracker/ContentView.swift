@@ -19,12 +19,9 @@ struct ContentView: View {
             FlipsView(model: model)
                 .tabItem { Label("Flips", systemImage: "flame.fill") }
                 .tag(0)
-            MarketView(model: model)
+            MarketView(model: model, presetManager: presetManager)
                 .tabItem { Label("Market", systemImage: "chart.bar.fill") }
                 .tag(1)
-            SavedFiltersView(presetManager: presetManager, model: model)
-                .tabItem { Label("Filters", systemImage: "slider.horizontal.3") }
-                .tag(2)
         }
         .tint(.appAccent)
         .preferredColorScheme(.dark)

@@ -4,13 +4,14 @@ struct MarketView: View {
     @Bindable var model: ListingsViewModel
     @State private var presetManager: PresetManager
     @State private var showFilter = false
+    @State private var showRosterUpdates = false
     @State private var selectedOpportunity: FlipOpportunity?
     @State private var headerAppeared = false
     @State private var searchText = ""
 
-    init(model: ListingsViewModel) {
+    init(model: ListingsViewModel, presetManager: PresetManager) {
         self.model = model
-        _presetManager = State(initialValue: PresetManager())
+        _presetManager = State(initialValue: presetManager)
     }
 
     private var displayedOpportunities: [FlipOpportunity] {
@@ -49,6 +50,19 @@ struct MarketView: View {
         .sheet(isPresented: $showFilter) {
             FilterSheetView(model: model, presetManager: presetManager, onApply: { model.applyFilters() })
         }
+        .sheet(isPresented: $showRosterUpdates) {
+            NavigationStack {
+                RosterUpdatesView()
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button("Done") {
+                                showRosterUpdates = false
+                            }
+                            .foregroundStyle(Color.appAccent)
+                        }
+                    }
+            }
+        }
         .sheet(item: $selectedOpportunity) { opportunity in
             CardDetailSheet(opportunity: opportunity)
         }
@@ -68,6 +82,7 @@ struct MarketView: View {
                 }
                 Spacer()
                 HStack(spacing: 10) {
+                    rosterUpdatesButton
                     refreshButton
                     filterButton
                 }
@@ -123,6 +138,20 @@ struct MarketView: View {
             model.isLoading ? .linear(duration: 0.9).repeatForever(autoreverses: false) : .default,
             value: model.isLoading
         )
+    }
+    
+    private var rosterUpdatesButton: some View {
+        Button {
+            Haptics.light()
+            showRosterUpdates = true
+        } label: {
+            Image(systemName: "calendar")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(Color.appAccent)
+                .padding(10)
+                .background(Color.appSurface, in: Circle())
+        }
+        .buttonStyle(PressScaleEffect())
     }
 
     private var filterButton: some View {

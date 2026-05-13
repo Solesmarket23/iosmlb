@@ -1,0 +1,348 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 63;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1890CF464F39043D2880FD17 /* MarketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D58CA7BBD0A74A4E1A3D40 /* MarketView.swift */; };
+		62A9597CA6C33A3876541617 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D1A8AFC28B52FF6F7FD12D /* DesignSystem.swift */; };
+		7E16EC543BFA576B664264BA /* SavedFiltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C340EE8639B847E364F022B /* SavedFiltersView.swift */; };
+		9147BF5D54C4D3EE70D825FF /* FilterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4919B8919C09119E69E46178 /* FilterSheetView.swift */; };
+		A954361083F30E631A9C2BF0 /* ListingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F63600E87B5250C937EEF07 /* ListingsViewModel.swift */; };
+		AE4D2B52ABCF4608088AE95D /* FlipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0B6F4EFF4F91D0D8954184 /* FlipsView.swift */; };
+		AF7E8EF69942BFB7DDDCF96A /* CardDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A3F999F7A838925974BFF7 /* CardDetailSheet.swift */; };
+		B10EA3F7F8BDCC1737F301CE /* RosterUpdatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9740D13A37CC3B3BE9797E36 /* RosterUpdatesView.swift */; };
+		B508677501267AC6CFC38DFD /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7695DB8E840707FC69A489 /* NotificationManager.swift */; };
+		B781A50CF5C6F050768F68A7 /* CardTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63988561C708CD4025F75039 /* CardTileView.swift */; };
+		BA38744C5188F3BD32DF54C3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15A8E453ADE0C58851C9206 /* ContentView.swift */; };
+		C3516B519E5117A2DF411ADA /* TheShowAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886661699C4A9591FD951EF2 /* TheShowAPIClient.swift */; };
+		DAB29696E40904BE698173A6 /* Show26FlipTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8A5352FFCB6AC110AA0EDE /* Show26FlipTrackerApp.swift */; };
+		EE8AB9A3ED8254AB806B88CE /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63C6959CBC4E890747E38C5 /* Models.swift */; };
+		FC13888B22433954EE3EEB5E /* FilterPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AFB6C161821228CD1C6C5C /* FilterPreset.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		01D1A8AFC28B52FF6F7FD12D /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
+		0C340EE8639B847E364F022B /* SavedFiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedFiltersView.swift; sourceTree = "<group>"; };
+		0DFF8466BC4CD069E601A375 /* Show26FlipTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Show26FlipTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A7695DB8E840707FC69A489 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		4919B8919C09119E69E46178 /* FilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetView.swift; sourceTree = "<group>"; };
+		4F63600E87B5250C937EEF07 /* ListingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsViewModel.swift; sourceTree = "<group>"; };
+		63988561C708CD4025F75039 /* CardTileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTileView.swift; sourceTree = "<group>"; };
+		68AFB6C161821228CD1C6C5C /* FilterPreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterPreset.swift; sourceTree = "<group>"; };
+		71D58CA7BBD0A74A4E1A3D40 /* MarketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketView.swift; sourceTree = "<group>"; };
+		79A3F999F7A838925974BFF7 /* CardDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailSheet.swift; sourceTree = "<group>"; };
+		7F8A5352FFCB6AC110AA0EDE /* Show26FlipTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Show26FlipTrackerApp.swift; sourceTree = "<group>"; };
+		886661699C4A9591FD951EF2 /* TheShowAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheShowAPIClient.swift; sourceTree = "<group>"; };
+		9740D13A37CC3B3BE9797E36 /* RosterUpdatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosterUpdatesView.swift; sourceTree = "<group>"; };
+		A63C6959CBC4E890747E38C5 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		D15A8E453ADE0C58851C9206 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		FB0B6F4EFF4F91D0D8954184 /* FlipsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipsView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		5BE7B31D7040E55F7B4011EF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0DFF8466BC4CD069E601A375 /* Show26FlipTracker.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		715F622CF1146AFB3B824A27 /* Show26FlipTracker */ = {
+			isa = PBXGroup;
+			children = (
+				79A3F999F7A838925974BFF7 /* CardDetailSheet.swift */,
+				63988561C708CD4025F75039 /* CardTileView.swift */,
+				D15A8E453ADE0C58851C9206 /* ContentView.swift */,
+				01D1A8AFC28B52FF6F7FD12D /* DesignSystem.swift */,
+				68AFB6C161821228CD1C6C5C /* FilterPreset.swift */,
+				4919B8919C09119E69E46178 /* FilterSheetView.swift */,
+				FB0B6F4EFF4F91D0D8954184 /* FlipsView.swift */,
+				4F63600E87B5250C937EEF07 /* ListingsViewModel.swift */,
+				71D58CA7BBD0A74A4E1A3D40 /* MarketView.swift */,
+				A63C6959CBC4E890747E38C5 /* Models.swift */,
+				3A7695DB8E840707FC69A489 /* NotificationManager.swift */,
+				9740D13A37CC3B3BE9797E36 /* RosterUpdatesView.swift */,
+				0C340EE8639B847E364F022B /* SavedFiltersView.swift */,
+				7F8A5352FFCB6AC110AA0EDE /* Show26FlipTrackerApp.swift */,
+				886661699C4A9591FD951EF2 /* TheShowAPIClient.swift */,
+			);
+			path = Show26FlipTracker;
+			sourceTree = "<group>";
+		};
+		7DA2DBD5DADC380737638E6E = {
+			isa = PBXGroup;
+			children = (
+				715F622CF1146AFB3B824A27 /* Show26FlipTracker */,
+				5BE7B31D7040E55F7B4011EF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		782B107BA696BDD0987452EF /* Show26FlipTracker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6704DF42A70F88DAF9C263BB /* Build configuration list for PBXNativeTarget "Show26FlipTracker" */;
+			buildPhases = (
+				094404CCC4F627A43EEC47E2 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Show26FlipTracker;
+			packageProductDependencies = (
+			);
+			productName = Show26FlipTracker;
+			productReference = 0DFF8466BC4CD069E601A375 /* Show26FlipTracker.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1DA42C66B8F915BDB8736794 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					782B107BA696BDD0987452EF = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 2D0D5608CFEF0F61A666A319 /* Build configuration list for PBXProject "Show26FlipTracker" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 7DA2DBD5DADC380737638E6E;
+			minimizedProjectReferenceProxies = 1;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				782B107BA696BDD0987452EF /* Show26FlipTracker */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		094404CCC4F627A43EEC47E2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AF7E8EF69942BFB7DDDCF96A /* CardDetailSheet.swift in Sources */,
+				B781A50CF5C6F050768F68A7 /* CardTileView.swift in Sources */,
+				BA38744C5188F3BD32DF54C3 /* ContentView.swift in Sources */,
+				62A9597CA6C33A3876541617 /* DesignSystem.swift in Sources */,
+				FC13888B22433954EE3EEB5E /* FilterPreset.swift in Sources */,
+				9147BF5D54C4D3EE70D825FF /* FilterSheetView.swift in Sources */,
+				AE4D2B52ABCF4608088AE95D /* FlipsView.swift in Sources */,
+				A954361083F30E631A9C2BF0 /* ListingsViewModel.swift in Sources */,
+				1890CF464F39043D2880FD17 /* MarketView.swift in Sources */,
+				EE8AB9A3ED8254AB806B88CE /* Models.swift in Sources */,
+				B508677501267AC6CFC38DFD /* NotificationManager.swift in Sources */,
+				B10EA3F7F8BDCC1737F301CE /* RosterUpdatesView.swift in Sources */,
+				7E16EC543BFA576B664264BA /* SavedFiltersView.swift in Sources */,
+				DAB29696E40904BE698173A6 /* Show26FlipTrackerApp.swift in Sources */,
+				C3516B519E5117A2DF411ADA /* TheShowAPIClient.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1FD2F481F15FA70D37E0CB28 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3SFYC3VA37;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.show26flip.tracker;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4C9418DD7E6212764FB96E09 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		9611AEB3ABDFEA08BEED0FD9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3SFYC3VA37;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.show26flip.tracker;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A0988F7CB6A911477AF4ABCA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2D0D5608CFEF0F61A666A319 /* Build configuration list for PBXProject "Show26FlipTracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A0988F7CB6A911477AF4ABCA /* Debug */,
+				4C9418DD7E6212764FB96E09 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6704DF42A70F88DAF9C263BB /* Build configuration list for PBXNativeTarget "Show26FlipTracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1FD2F481F15FA70D37E0CB28 /* Debug */,
+				9611AEB3ABDFEA08BEED0FD9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1DA42C66B8F915BDB8736794 /* Project object */;
+}

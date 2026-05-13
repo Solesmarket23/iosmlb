@@ -73,7 +73,8 @@ struct CardTileView: View {
                     switch phase {
                     case .success(let img):
                         img.resizable().scaledToFill()
-                    case .failure:
+                    case .failure(let error):
+                        let _ = print("❌ Image failed to load for \(item?.name ?? "unknown"): \(error)")
                         placeholderIcon
                     default:
                         shimmerPlaceholder
@@ -82,6 +83,7 @@ struct CardTileView: View {
                 .frame(width: 58, height: 80)
                 .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
             } else {
+                let _ = print("⚠️ No image URL for \(item?.name ?? "unknown")")
                 placeholderIcon
             }
         }
@@ -190,34 +192,29 @@ struct CardTileView: View {
 
     private func profitBadge(_ amount: Int) -> some View {
         VStack(spacing: 3) {
-            if let ppm = profitPerMin, ppm > 1 {
-                VStack(spacing: 2) {
+            VStack(spacing: 2) {
+                if let ppm = profitPerMin {
                     Text("\(Int(ppm))")
                         .font(.system(size: 16, weight: .bold, design: .rounded))
-                        .foregroundStyle(Color.spreadGreen)
-                    Text("per min")
-                        .font(.system(size: 8, weight: .semibold))
-                        .foregroundStyle(Color.spreadGreen.opacity(0.75))
+                        .foregroundStyle(ppm > 0 ? Color.spreadGreen : Color.textTertiary)
+                } else {
+                    Text("—")
+                        .font(.system(size: 16, weight: .bold, design: .rounded))
+                        .foregroundStyle(Color.textTertiary)
                 }
-            } else {
-                VStack(spacing: 2) {
-                    Text("+\(amount.stubsFormatted)")
-                        .font(.system(size: 13, weight: .bold, design: .rounded))
-                        .foregroundStyle(Color.spreadGreen)
-                    Text("net profit")
-                        .font(.system(size: 8, weight: .semibold))
-                        .foregroundStyle(Color.spreadGreen.opacity(0.65))
-                }
+                Text("per min")
+                    .font(.system(size: 8, weight: .semibold))
+                    .foregroundStyle((profitPerMin ?? 0) > 0 ? Color.spreadGreen.opacity(0.75) : Color.textTertiary.opacity(0.75))
             }
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 10)
         .background(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(Color.spreadGreen.opacity(0.10))
+                .fill((profitPerMin ?? 0) > 0 ? Color.spreadGreen.opacity(0.10) : Color.textTertiary.opacity(0.06))
                 .overlay(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .strokeBorder(Color.spreadGreen.opacity(0.22), lineWidth: 1)
+                        .strokeBorder((profitPerMin ?? 0) > 0 ? Color.spreadGreen.opacity(0.22) : Color.textTertiary.opacity(0.15), lineWidth: 1)
                 )
         )
     }

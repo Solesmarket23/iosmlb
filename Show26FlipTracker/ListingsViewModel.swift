@@ -26,10 +26,36 @@ final class ListingsViewModel {
     private let presetManager: PresetManager
     private let notificationManager: NotificationManager
     private var currentLoadTask: Task<Void, Never>?
+    
+    private let listingsCacheKey = "cachedListings"
+    private let cacheTimestampKey = "cacheTimestamp"
 
     init(presetManager: PresetManager, notificationManager: NotificationManager) {
         self.presetManager = presetManager
         self.notificationManager = notificationManager
+        Task { @MainActor in
+            loadCachedListings()
+        }
+    }
+    
+    @MainActor
+    private func loadCachedListings() {
+        guard let data = UserDefaults.standard.data(forKey: listingsCacheKey),
+              let cached = try? JSONDecoder().decode([MarketListing].self, from: data) else {
+            return
+        }
+        listings = cached
+        if let timestamp = UserDefaults.standard.object(forKey: cacheTimestampKey) as? Date {
+            lastRefreshDate = timestamp
+        }
+        print("📦 Loaded \(cached.count) cached listings")
+    }
+    
+    @MainActor
+    private func saveListingsCache() {
+        guard let data = try? JSONEncoder().encode(listings) else { return }
+        UserDefaults.standard.set(data, forKey: listingsCacheKey)
+        UserDefaults.standard.set(Date(), forKey: cacheTimestampKey)
     }
 
     var flipRows: [FlipOpportunity] {
@@ -98,6 +124,7 @@ final class ListingsViewModel {
             )
             listings = all
             lastRefreshDate = Date()
+            saveListingsCache() // Save to cache
 
             await checkForNewMatches(previousUUIDs: previousUUIDs)
         } catch {
@@ -230,6 +257,7 @@ final class ListingsViewModel {
                 totalPages = 1
                 page = 1
                 lastRefreshDate = Date()
+                saveListingsCache() // Save to cache
                 Haptics.success()
 
                 await enrichTopFlips()

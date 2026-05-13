@@ -14,7 +14,7 @@ struct ListingsPage: Decodable {
     }
 }
 
-struct MarketListing: Decodable, Identifiable {
+struct MarketListing: Codable, Identifiable {
     var id: String { item?.uuid ?? listingName }
 
     let listingName: String
@@ -30,9 +30,10 @@ struct MarketListing: Decodable, Identifiable {
     }
 }
 
-struct ListingItem: Decodable {
+struct ListingItem: Codable {
     let uuid: String?
     let img: String?
+    let bakedImg: String?
     let name: String?
     let rarity: String?
     let team: String?
@@ -41,10 +42,15 @@ struct ListingItem: Decodable {
 
     enum CodingKeys: String, CodingKey {
         case uuid, img, name, rarity, team, ovr
+        case bakedImg = "baked_img"
         case displayPosition = "display_position"
     }
 
     var imageURL: URL? {
+        // Prefer baked_img as it's more stable, fall back to img
+        if let baked = bakedImg, !baked.isEmpty {
+            return URL(string: baked)
+        }
         guard let img, !img.isEmpty else { return nil }
         if img.hasPrefix("http") { return URL(string: img) }
         return URL(string: "https://mlb26.theshow.com" + img)
@@ -140,7 +146,7 @@ struct RosterUpdate: Decodable, Identifiable {
     }
 }
 
-enum PriceField: Decodable, Equatable {
+enum PriceField: Codable, Equatable {
     case none
     case value(Int)
 
@@ -153,6 +159,16 @@ enum PriceField: Decodable, Equatable {
             if let n = Int(str) { self = .value(n); return }
         }
         self = .none
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        switch self {
+        case .none:
+            try container.encodeNil()
+        case .value(let n):
+            try container.encode(n)
+        }
     }
 
     var intValue: Int? {

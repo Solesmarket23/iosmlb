@@ -39,6 +39,7 @@ struct FilterSheetView: View {
                 handle
                 ScrollView {
                     VStack(alignment: .leading, spacing: 28) {
+                        itemTypeSection
                         raritySection
                         positionSection
                         seriesSection
@@ -123,6 +124,44 @@ struct FilterSheetView: View {
                             Capsule()
                                 .strokeBorder(
                                     isSelected ? Color.clear : (value == nil ? Color.appAccent.opacity(0.3) : style.primaryColor.opacity(0.3)),
+                                    lineWidth: 1
+                                )
+                        )
+                )
+        }
+        .buttonStyle(PressScaleEffect())
+    }
+
+    private var itemTypeSection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            sectionHeader("ITEM TYPE")
+            FlowLayout(spacing: 8) {
+                itemTypeChip(label: "All", value: nil)
+                ForEach(ItemType.allCases, id: \.self) { type in
+                    itemTypeChip(label: type.displayName, value: type)
+                }
+            }
+        }
+    }
+
+    private func itemTypeChip(label: String, value: ItemType?) -> some View {
+        let isSelected = model.selectedItemType == value
+        return Button {
+            Haptics.selection()
+            model.selectedItemType = value
+        } label: {
+            Text(label)
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(isSelected ? Color.appBG : Color.appAccent)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 8)
+                .background(
+                    Capsule()
+                        .fill(isSelected ? Color.appAccent : Color.appSurface)
+                        .overlay(
+                            Capsule()
+                                .strokeBorder(
+                                    isSelected ? Color.clear : Color.appAccent.opacity(0.3),
                                     lineWidth: 1
                                 )
                         )
@@ -347,6 +386,7 @@ struct FilterSheetView: View {
             maxOverall: Int(model.maxOverallStr),
             minROI: Double(model.minROIStr),
             minProfitPerFlip: Int(model.minProfitPerFlipStr),
+            itemType: model.selectedItemType,
             notificationsEnabled: false
         )
         presetManager.savePreset(preset)

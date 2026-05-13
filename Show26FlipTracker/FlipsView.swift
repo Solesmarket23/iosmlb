@@ -7,6 +7,7 @@ struct FlipsView: View {
     @State private var showPresets = false
     @State private var selectedOpportunity: FlipOpportunity?
     @State private var headerAppeared = false
+    @State private var autoRefreshTimer: Timer?
 
     init(model: ListingsViewModel) {
         self.model = model
@@ -42,6 +43,12 @@ struct FlipsView: View {
         }
         .sheet(item: $selectedOpportunity) { opportunity in
             CardDetailSheet(opportunity: opportunity)
+        }
+        .onAppear {
+            startAutoRefresh()
+        }
+        .onDisappear {
+            stopAutoRefresh()
         }
     }
 
@@ -115,21 +122,21 @@ struct FlipsView: View {
     private var refreshButton: some View {
         Button {
             Haptics.rigid()
-            Task { await model.loadAll() }
+            Task { await model.loadAll(forceRefresh: true) }
         } label: {
             Image(systemName: "arrow.clockwise")
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(model.isLoading ? Color.textTertiary : Color.appAccent)
                 .padding(10)
                 .background(Color.appSurface, in: Circle())
+                .rotationEffect(.degrees(model.isLoading ? 360 : 0))
+                .animation(
+                    model.isLoading ? .linear(duration: 0.9).repeatForever(autoreverses: false) : .default,
+                    value: model.isLoading
+                )
         }
         .buttonStyle(PressScaleEffect())
         .disabled(model.isLoading)
-        .rotationEffect(.degrees(model.isLoading ? 360 : 0))
-        .animation(
-            model.isLoading ? .linear(duration: 0.9).repeatForever(autoreverses: false) : .default,
-            value: model.isLoading
-        )
     }
     
     private var presetsButton: some View {
@@ -388,5 +395,27 @@ struct FlipsView: View {
         )
         .padding(.horizontal, 16)
         .padding(.bottom, 12)
+    }
+    
+    // MARK: - Auto Refresh
+    
+    private func startAutoRefresh() {
+        // Stop any existing timer first
+        stopAutoRefresh()
+        
+        // Create a timer that fires every 60 seconds
+        autoRefreshTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
+            Task {
+                await model.silentRefresh()
+            }
+        }
+        
+        print("🔄 Auto-refresh started (every 60 seconds)")
+    }
+    
+    private func stopAutoRefresh() {
+        autoRefreshTimer?.invalidate()
+        autoRefreshTimer = nil
+        print("⏸️ Auto-refresh stopped")
     }
 }

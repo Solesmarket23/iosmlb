@@ -9,6 +9,7 @@ extension Color {
     static let appSurfaceHi  = Color(red: 0.114, green: 0.122, blue: 0.153)
     static let appAccent     = Color(red: 0.0,   green: 0.831, blue: 0.667)
     static let spreadGreen   = Color(red: 0.133, green: 0.773, blue: 0.345)
+    static let spreadRed     = Color(red: 0.937, green: 0.263, blue: 0.314)
     static let priceAmber    = Color(red: 0.957, green: 0.620, blue: 0.043)
     static let textSecondary = Color(white: 0.55)
     static let textTertiary  = Color(white: 0.35)
@@ -38,6 +39,13 @@ enum RarityStyle {
         case .bronze:  return Color(red: 0.804, green: 0.498, blue: 0.196)
         case .common:  return Color(white: 0.5)
         case .unknown: return Color(white: 0.38)
+        }
+    }
+    
+    var textColor: Color {
+        switch self {
+        case .diamond, .gold: return Color.appBG
+        case .silver, .bronze, .common, .unknown: return Color.white
         }
     }
 

@@ -14,6 +14,7 @@ struct FilterPreset: Identifiable, Codable, Equatable {
     var minProfitPerMinute: Double?
     var minROI: Double?
     var minProfitPerFlip: Int?
+    var itemType: ItemType?
     var notificationsEnabled: Bool
 
     init(
@@ -29,6 +30,7 @@ struct FilterPreset: Identifiable, Codable, Equatable {
         minProfitPerMinute: Double? = nil,
         minROI: Double? = nil,
         minProfitPerFlip: Int? = nil,
+        itemType: ItemType? = nil,
         notificationsEnabled: Bool = false
     ) {
         self.id = id
@@ -43,11 +45,13 @@ struct FilterPreset: Identifiable, Codable, Equatable {
         self.minProfitPerMinute = minProfitPerMinute
         self.minROI = minROI
         self.minProfitPerFlip = minProfitPerFlip
+        self.itemType = itemType
         self.notificationsEnabled = notificationsEnabled
     }
 
     var filterDescription: String {
         var parts: [String] = []
+        if let itemType { parts.append(itemType.displayName) }
         if let r = rarity { parts.append(r.rawValue.capitalized) }
         if let p = position { parts.append(p.displayName) }
         if let max = maxBuyPrice { parts.append("≤\(max) buy") }
@@ -59,6 +63,7 @@ struct FilterPreset: Identifiable, Codable, Equatable {
     }
 
     func matches(_ listing: MarketListing) -> Bool {
+        if let itemType, listing.item?.type != itemType.rawValue { return false }
         if let r = rarity, listing.item?.rarity?.lowercased() != r.rawValue { return false }
         if let p = position, listing.item?.displayPosition != p.rawValue { return false }
         if let minPrice = minBuyPrice, (listing.bestBuyPrice.intValue ?? 0) < minPrice { return false }

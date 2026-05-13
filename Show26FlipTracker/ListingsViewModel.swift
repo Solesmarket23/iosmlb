@@ -18,9 +18,11 @@ final class ListingsViewModel {
     var maxOverallStr: String = ""
     var minROIStr: String = ""
     var minProfitPerFlipStr: String = ""
+    var selectedItemType: ItemType?
     var activePresetName: String?
     var metaData: MetaData?
     var detailedCache: [String: DetailedListing] = [:]
+    var detailedCacheTimestamps: [String: Date] = [:]
     var autoRefreshEnabled = true
     var lastRefreshDate: Date?
 
@@ -32,12 +34,16 @@ final class ListingsViewModel {
     
     private let listingsCacheKey = "cachedListings"
     private let cacheTimestampKey = "cacheTimestamp"
+    private let detailedCacheKey = "cachedDetailedListings"
+    private let detailedCacheTimestampsKey = "cachedDetailedTimestamps"
+    private let detailedCacheMaxAge: TimeInterval = 3600 // 1 hour
 
     init(presetManager: PresetManager, notificationManager: NotificationManager) {
         self.presetManager = presetManager
         self.notificationManager = notificationManager
         Task { @MainActor in
             loadCachedListings()
+            loadCachedDetailedListings()
         }
     }
     
@@ -55,10 +61,40 @@ final class ListingsViewModel {
     }
     
     @MainActor
+    private func loadCachedDetailedListings() {
+        if let data = UserDefaults.standard.data(forKey: detailedCacheKey),
+           let cached = try? JSONDecoder().decode([String: DetailedListing].self, from: data) {
+            detailedCache = cached
+            print("📦 Loaded \(cached.count) cached detailed listings")
+        }
+        
+        if let data = UserDefaults.standard.data(forKey: detailedCacheTimestampsKey),
+           let timestamps = try? JSONDecoder().decode([String: Date].self, from: data) {
+            detailedCacheTimestamps = timestamps
+        }
+    }
+    
+    @MainActor
     private func saveListingsCache() {
         guard let data = try? JSONEncoder().encode(listings) else { return }
         UserDefaults.standard.set(data, forKey: listingsCacheKey)
         UserDefaults.standard.set(Date(), forKey: cacheTimestampKey)
+    }
+    
+    @MainActor
+    private func saveDetailedCache() {
+        if let data = try? JSONEncoder().encode(detailedCache) {
+            UserDefaults.standard.set(data, forKey: detailedCacheKey)
+        }
+        if let data = try? JSONEncoder().encode(detailedCacheTimestamps) {
+            UserDefaults.standard.set(data, forKey: detailedCacheTimestampsKey)
+        }
+    }
+    
+    @MainActor
+    private func isCacheValid(for uuid: String) -> Bool {
+        guard let timestamp = detailedCacheTimestamps[uuid] else { return false }
+        return Date().timeIntervalSince(timestamp) < detailedCacheMaxAge
     }
 
     var flipRows: [FlipOpportunity] {
@@ -124,7 +160,7 @@ final class ListingsViewModel {
     }
 
     @MainActor
-    private func silentRefresh() async {
+    func silentRefresh() async {
         guard !isLoading else { return }
 
         let previousUUIDs = Set(listings.compactMap { $0.item?.uuid })
@@ -140,7 +176,8 @@ final class ListingsViewModel {
                 seriesId: selectedSeriesId,
                 minBestBuyPrice: minBuy,
                 maxBestBuyPrice: maxBuy,
-                maxPages: 20
+                itemType: selectedItemType,
+                maxPages: 10
             )
             listings = all
             lastRefreshDate = Date()
@@ -233,12 +270,33 @@ final class ListingsViewModel {
     }
 
     @MainActor
-    func loadAll() async {
+    func loadAll(forceRefresh: Bool = false) async {
         // Cancel any existing load task
         currentLoadTask?.cancel()
         
         // Don't start a new load if one is already running
         guard !isLoading else { return }
+        
+        // Check if we have recent cached data (less than 5 minutes old)
+        let shouldSkipFetch: Bool
+        if forceRefresh {
+            shouldSkipFetch = false
+        } else if let lastRefresh = lastRefreshDate {
+            let age = Date().timeIntervalSince(lastRefresh)
+            shouldSkipFetch = age < 300 && !listings.isEmpty // 5 minutes
+            if shouldSkipFetch {
+                print("📦 Using recent cache (age: \(Int(age))s)")
+            }
+        } else {
+            shouldSkipFetch = false
+        }
+        
+        // If cache is recent and not forcing refresh, just enrich and return
+        if shouldSkipFetch {
+            await enrichTopFlips()
+            startAutoRefresh()
+            return
+        }
         
         let task = Task { @MainActor in
             isLoadingAll = true
@@ -259,6 +317,7 @@ final class ListingsViewModel {
                 // Check for cancellation
                 try Task.checkCancellation()
                 
+                print("🔄 Fetching fresh data from API...")
                 let all = try await client.fetchAllListings(
                     sort: .bestSellPrice,
                     order: .desc,
@@ -267,7 +326,8 @@ final class ListingsViewModel {
                     seriesId: selectedSeriesId,
                     minBestBuyPrice: minBuy,
                     maxBestBuyPrice: maxBuy,
-                    maxPages: 20
+                    itemType: selectedItemType,
+                    maxPages: 10
                 )
                 
                 // Check for cancellation before updating
@@ -317,7 +377,8 @@ final class ListingsViewModel {
                 position: selectedPosition,
                 seriesId: selectedSeriesId,
                 minBestBuyPrice: minBuy,
-                maxBestBuyPrice: maxBuy
+                maxBestBuyPrice: maxBuy,
+                itemType: selectedItemType
             )
             listings = result.listings
             totalPages = result.totalPages
@@ -359,6 +420,7 @@ final class ListingsViewModel {
         maxOverallStr = preset.maxOverall.map(String.init) ?? ""
         minROIStr = preset.minROI.map { String(format: "%.0f", $0) } ?? ""
         minProfitPerFlipStr = preset.minProfitPerFlip.map(String.init) ?? ""
+        selectedItemType = preset.itemType
         activePresetName = preset.name
         Task { await loadAll() }
     }
@@ -373,6 +435,7 @@ final class ListingsViewModel {
         maxOverallStr = ""
         minROIStr = ""
         minProfitPerFlipStr = ""
+        selectedItemType = nil
         activePresetName = nil
         Task { await loadAll() }
     }
@@ -381,8 +444,21 @@ final class ListingsViewModel {
     private func enrichTopFlips() async {
         // Only enrich top 10 cards to speed up loading
         let topUUIDs = flipRows.prefix(10).compactMap { $0.listing.item?.uuid }
+        
+        // Filter out UUIDs that are already cached and valid
+        let uuidsToFetch = topUUIDs.filter { uuid in
+            !isCacheValid(for: uuid)
+        }
+        
+        if uuidsToFetch.isEmpty {
+            print("✅ All top flips already cached")
+            return
+        }
+        
+        print("🔄 Fetching details for \(uuidsToFetch.count)/\(topUUIDs.count) cards (rest cached)")
+        
         await withTaskGroup(of: (String, DetailedListing?).self) { group in
-            for uuid in topUUIDs {
+            for uuid in uuidsToFetch {
                 group.addTask {
                     let detail = try? await self.client.fetchDetailedListing(uuid: uuid)
                     return (uuid, detail)
@@ -391,9 +467,13 @@ final class ListingsViewModel {
             for await (uuid, detail) in group {
                 if let detail {
                     detailedCache[uuid] = detail
+                    detailedCacheTimestamps[uuid] = Date()
                 }
             }
         }
+        
+        // Save cache after enriching
+        saveDetailedCache()
     }
     
     @MainActor

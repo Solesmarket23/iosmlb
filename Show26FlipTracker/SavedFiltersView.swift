@@ -326,6 +326,7 @@ struct PresetEditSheet: View {
     @State private var minProfitPerMinute: String = ""
     @State private var minROI: String = ""
     @State private var minProfitPerFlip: String = ""
+    @State private var selectedItemType: ItemType?
     @State private var notificationsEnabled: Bool = false
     @State private var showValidationError = false
 
@@ -344,6 +345,7 @@ struct PresetEditSheet: View {
         _minProfitPerMinute = State(initialValue: preset?.minProfitPerMinute.map { String(format: "%.0f", $0) } ?? "")
         _minROI = State(initialValue: preset?.minROI.map { String(format: "%.0f", $0) } ?? "")
         _minProfitPerFlip = State(initialValue: preset?.minProfitPerFlip.map(String.init) ?? "")
+        _selectedItemType = State(initialValue: preset?.itemType)
         _notificationsEnabled = State(initialValue: preset?.notificationsEnabled ?? false)
     }
 
@@ -354,6 +356,7 @@ struct PresetEditSheet: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
                         nameSection
+                        itemTypeSection
                         raritySection
                         positionSection
                         priceSection
@@ -426,6 +429,44 @@ struct PresetEditSheet: View {
                     }
                 }
         }
+    }
+
+    private var itemTypeSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            sectionHeader("ITEM TYPE (OPTIONAL)")
+            FlowLayout(spacing: 8) {
+                itemTypeChip(label: "Any", value: nil)
+                ForEach(ItemType.allCases, id: \.self) { type in
+                    itemTypeChip(label: type.displayName, value: type)
+                }
+            }
+        }
+    }
+
+    private func itemTypeChip(label: String, value: ItemType?) -> some View {
+        let isSelected = selectedItemType == value
+        return Button {
+            Haptics.selection()
+            selectedItemType = value
+        } label: {
+            Text(label)
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(isSelected ? Color.appBG : Color.appAccent)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 8)
+                .background(
+                    Capsule()
+                        .fill(isSelected ? Color.appAccent : Color.appSurface)
+                        .overlay(
+                            Capsule()
+                                .strokeBorder(
+                                    isSelected ? Color.clear : Color.appAccent.opacity(0.3),
+                                    lineWidth: 1
+                                )
+                        )
+                )
+        }
+        .buttonStyle(PressScaleEffect())
     }
 
     private var raritySection: some View {
@@ -607,6 +648,7 @@ struct PresetEditSheet: View {
             minProfitPerMinute: Double(minProfitPerMinute),
             minROI: Double(minROI),
             minProfitPerFlip: Int(minProfitPerFlip),
+            itemType: selectedItemType,
             notificationsEnabled: notificationsEnabled
         )
         onSave(newPreset)

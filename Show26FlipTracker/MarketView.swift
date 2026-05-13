@@ -5,6 +5,8 @@ struct MarketView: View {
     @State private var presetManager: PresetManager
     @State private var showFilter = false
     @State private var showRosterUpdates = false
+    @State private var showPlayerStats = false
+    @State private var showCaptains = false
     @State private var selectedOpportunity: FlipOpportunity?
     @State private var headerAppeared = false
     @State private var searchText = ""
@@ -63,6 +65,32 @@ struct MarketView: View {
                     }
             }
         }
+        .sheet(isPresented: $showPlayerStats) {
+            NavigationStack {
+                PlayerStatsView()
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button("Done") {
+                                showPlayerStats = false
+                            }
+                            .foregroundStyle(Color.appAccent)
+                        }
+                    }
+            }
+        }
+        .sheet(isPresented: $showCaptains) {
+            NavigationStack {
+                CaptainsView()
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button("Done") {
+                                showCaptains = false
+                            }
+                            .foregroundStyle(Color.appAccent)
+                        }
+                    }
+            }
+        }
         .sheet(item: $selectedOpportunity) { opportunity in
             CardDetailSheet(opportunity: opportunity)
         }
@@ -82,6 +110,8 @@ struct MarketView: View {
                 }
                 Spacer()
                 HStack(spacing: 10) {
+                    captainsButton
+                    playerStatsButton
                     rosterUpdatesButton
                     refreshButton
                     filterButton
@@ -123,13 +153,18 @@ struct MarketView: View {
     private var refreshButton: some View {
         Button {
             Haptics.rigid()
-            Task { await model.loadAll() }
+            Task { await model.loadAll(forceRefresh: true) }
         } label: {
             Image(systemName: "arrow.clockwise")
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(model.isLoading ? Color.textTertiary : Color.appAccent)
                 .padding(10)
                 .background(Color.appSurface, in: Circle())
+                .rotationEffect(.degrees(model.isLoading ? 360 : 0))
+                .animation(
+                    model.isLoading ? .linear(duration: 0.9).repeatForever(autoreverses: false) : .default,
+                    value: model.isLoading
+                )
         }
         .buttonStyle(PressScaleEffect())
         .disabled(model.isLoading)
@@ -138,6 +173,34 @@ struct MarketView: View {
             model.isLoading ? .linear(duration: 0.9).repeatForever(autoreverses: false) : .default,
             value: model.isLoading
         )
+    }
+    
+    private var captainsButton: some View {
+        Button {
+            Haptics.light()
+            showCaptains = true
+        } label: {
+            Image(systemName: "star.circle")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(Color.appAccent)
+                .padding(10)
+                .background(Color.appSurface, in: Circle())
+        }
+        .buttonStyle(PressScaleEffect())
+    }
+    
+    private var playerStatsButton: some View {
+        Button {
+            Haptics.light()
+            showPlayerStats = true
+        } label: {
+            Image(systemName: "person.circle")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(Color.appAccent)
+                .padding(10)
+                .background(Color.appSurface, in: Circle())
+        }
+        .buttonStyle(PressScaleEffect())
     }
     
     private var rosterUpdatesButton: some View {

@@ -14,6 +14,24 @@ enum ListingOrder: String {
     case asc, desc
 }
 
+enum ItemType: String, CaseIterable, Codable {
+    case mlb_card
+    case stadium
+    case equipment
+    case sponsorship
+    case unlockable
+    
+    var displayName: String {
+        switch self {
+        case .mlb_card: return "Player"
+        case .stadium: return "Stadium"
+        case .equipment: return "Equipment"
+        case .sponsorship: return "Sponsorship"
+        case .unlockable: return "Unlockable"
+        }
+    }
+}
+
 enum DisplayPosition: String, CaseIterable, Codable {
     case SP, RP, CP, C
     case firstBase = "1B"
@@ -80,14 +98,19 @@ actor TheShowAPIClient {
         position: DisplayPosition? = nil,
         seriesId: Int? = nil,
         minBestBuyPrice: Int? = nil,
-        maxBestBuyPrice: Int? = nil
+        maxBestBuyPrice: Int? = nil,
+        itemType: ItemType? = nil
     ) async throws -> ListingsPage {
         var items: [URLQueryItem] = [
-            URLQueryItem(name: "type", value: "mlb_card"),
             URLQueryItem(name: "page", value: String(page)),
             URLQueryItem(name: "sort", value: sort.rawValue),
             URLQueryItem(name: "order", value: order.rawValue)
         ]
+        
+        if let itemType {
+            items.append(URLQueryItem(name: "type", value: itemType.rawValue))
+        }
+        
         if let rarity {
             items.append(URLQueryItem(name: "rarity", value: rarity.rawValue))
         }
@@ -125,6 +148,7 @@ actor TheShowAPIClient {
         seriesId: Int? = nil,
         minBestBuyPrice: Int? = nil,
         maxBestBuyPrice: Int? = nil,
+        itemType: ItemType? = nil,
         maxPages: Int = 50
     ) async throws -> [MarketListing] {
         let firstPage = try await fetchListings(
@@ -135,7 +159,8 @@ actor TheShowAPIClient {
             position: position,
             seriesId: seriesId,
             minBestBuyPrice: minBestBuyPrice,
-            maxBestBuyPrice: maxBestBuyPrice
+            maxBestBuyPrice: maxBestBuyPrice,
+            itemType: itemType
         )
 
         var allListings = firstPage.listings
@@ -154,7 +179,8 @@ actor TheShowAPIClient {
                         position: position,
                         seriesId: seriesId,
                         minBestBuyPrice: minBestBuyPrice,
-                        maxBestBuyPrice: maxBestBuyPrice
+                        maxBestBuyPrice: maxBestBuyPrice,
+                        itemType: itemType
                     )
                     return pageResult.listings
                 }
@@ -166,5 +192,41 @@ actor TheShowAPIClient {
         }
 
         return allListings
+    }
+    
+    func searchPlayer(username: String) async throws -> PlayerSearchResponse {
+        var components = URLComponents(url: baseURL.appendingPathComponent("apis/player_search.json"), resolvingAgainstBaseURL: false)!
+        components.queryItems = [URLQueryItem(name: "username", value: username)]
+        guard let url = components.url else { throw URLError(.badURL) }
+        
+        let (data, response) = try await session.data(from: url)
+        guard let http = response as? HTTPURLResponse, (200...299).contains(http.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+        return try JSONDecoder().decode(PlayerSearchResponse.self, from: data)
+    }
+    
+    func fetchDetailedItem(uuid: String) async throws -> DetailedItemCard {
+        var components = URLComponents(url: baseURL.appendingPathComponent("apis/item.json"), resolvingAgainstBaseURL: false)!
+        components.queryItems = [URLQueryItem(name: "uuid", value: uuid)]
+        guard let url = components.url else { throw URLError(.badURL) }
+        
+        let (data, response) = try await session.data(from: url)
+        guard let http = response as? HTTPURLResponse, (200...299).contains(http.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+        return try JSONDecoder().decode(DetailedItemCard.self, from: data)
+    }
+    
+    func fetchCaptains(page: Int = 1) async throws -> CaptainsPage {
+        var components = URLComponents(url: baseURL.appendingPathComponent("apis/captains.json"), resolvingAgainstBaseURL: false)!
+        components.queryItems = [URLQueryItem(name: "page", value: String(page))]
+        guard let url = components.url else { throw URLError(.badURL) }
+        
+        let (data, response) = try await session.data(from: url)
+        guard let http = response as? HTTPURLResponse, (200...299).contains(http.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+        return try JSONDecoder().decode(CaptainsPage.self, from: data)
     }
 }

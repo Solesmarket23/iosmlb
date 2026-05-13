@@ -19,9 +19,12 @@ struct ContentView: View {
             FlipsView(model: model)
                 .tabItem { Label("Flips", systemImage: "flame.fill") }
                 .tag(0)
+            PlayerFinderView(model: model)
+                .tabItem { Label("Players", systemImage: "person.2.fill") }
+                .tag(1)
             MarketView(model: model, presetManager: presetManager)
                 .tabItem { Label("Market", systemImage: "chart.bar.fill") }
-                .tag(1)
+                .tag(2)
         }
         .tint(.appAccent)
         .preferredColorScheme(.dark)

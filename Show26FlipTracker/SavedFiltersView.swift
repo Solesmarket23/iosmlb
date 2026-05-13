@@ -327,6 +327,7 @@ struct PresetEditSheet: View {
     @State private var minROI: String = ""
     @State private var minProfitPerFlip: String = ""
     @State private var notificationsEnabled: Bool = false
+    @State private var showValidationError = false
 
     init(preset: FilterPreset?, onSave: @escaping (FilterPreset) -> Void, metaData: MetaData?) {
         self.preset = preset
@@ -377,11 +378,15 @@ struct PresetEditSheet: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
                         Haptics.medium()
-                        savePreset()
-                        dismiss()
+                        if name.trimmingCharacters(in: .whitespaces).isEmpty {
+                            showValidationError = true
+                            Haptics.error()
+                        } else {
+                            savePreset()
+                            dismiss()
+                        }
                     }
                     .foregroundStyle(Color.appAccent)
-                    .disabled(name.isEmpty)
                 }
             }
         }
@@ -389,7 +394,14 @@ struct PresetEditSheet: View {
 
     private var nameSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            sectionHeader("PRESET NAME")
+            HStack(spacing: 6) {
+                sectionHeader("PRESET NAME")
+                if showValidationError && name.trimmingCharacters(in: .whitespaces).isEmpty {
+                    Text("Required")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(Color.red)
+                }
+            }
             TextField("e.g. Gold Under 3K", text: $name)
                 .font(.system(size: 15))
                 .foregroundStyle(Color.white)
@@ -400,9 +412,19 @@ struct PresetEditSheet: View {
                         .fill(Color.appSurface)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .strokeBorder(Color.appAccent.opacity(0.2), lineWidth: 1)
+                                .strokeBorder(
+                                    showValidationError && name.trimmingCharacters(in: .whitespaces).isEmpty 
+                                        ? Color.red 
+                                        : Color.appAccent.opacity(0.2), 
+                                    lineWidth: showValidationError && name.trimmingCharacters(in: .whitespaces).isEmpty ? 2 : 1
+                                )
                         )
                 )
+                .onChange(of: name) { _, _ in
+                    if showValidationError {
+                        showValidationError = false
+                    }
+                }
         }
     }
 

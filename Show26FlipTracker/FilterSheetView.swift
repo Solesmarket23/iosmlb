@@ -6,6 +6,7 @@ struct FilterSheetView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showingSavePreset = false
     @State private var presetName = ""
+    @State private var showValidationError = false
 
     private let presetManager: PresetManager
 
@@ -62,12 +63,23 @@ struct FilterSheetView: View {
             TextField("Preset Name", text: $presetName)
             Button("Cancel", role: .cancel) {
                 presetName = ""
+                showValidationError = false
             }
             Button("Save") {
-                saveCurrentAsPreset()
+                if presetName.trimmingCharacters(in: .whitespaces).isEmpty {
+                    showValidationError = true
+                    Haptics.error()
+                } else {
+                    saveCurrentAsPreset()
+                    showValidationError = false
+                }
             }
         } message: {
-            Text("Enter a name for this filter combination")
+            if showValidationError {
+                Text("Preset name is required")
+            } else {
+                Text("Enter a name for this filter combination")
+            }
         }
     }
 
@@ -320,7 +332,10 @@ struct FilterSheetView: View {
     }
 
     private func saveCurrentAsPreset() {
-        guard !presetName.isEmpty else { return }
+        guard !presetName.trimmingCharacters(in: .whitespaces).isEmpty else {
+            showValidationError = true
+            return
+        }
         let preset = FilterPreset(
             name: presetName,
             rarity: model.selectedRarity,
@@ -336,6 +351,8 @@ struct FilterSheetView: View {
         )
         presetManager.savePreset(preset)
         presetName = ""
+        showValidationError = false
+        showingSavePreset = false
     }
 
     private func sectionHeader(_ title: String) -> some View {

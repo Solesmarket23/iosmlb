@@ -198,6 +198,13 @@ struct FlipOpportunity: Identifiable {
         let net = afterTax - buy
         return net > 0 ? net : nil
     }
+    
+    var roi: Double? {
+        guard let profit = netProfit,
+              let buy = listing.bestBuyPrice.intValue,
+              buy > 0 else { return nil }
+        return (Double(profit) / Double(buy)) * 100.0
+    }
 
     /// Estimated profit per minute based on completed order frequency.
     var profitPerMinute: Double? {

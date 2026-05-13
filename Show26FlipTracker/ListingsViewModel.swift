@@ -16,6 +16,8 @@ final class ListingsViewModel {
     var maxBuyStubs: String = ""
     var minOverallStr: String = ""
     var maxOverallStr: String = ""
+    var minROIStr: String = ""
+    var minProfitPerFlipStr: String = ""
     var metaData: MetaData?
     var detailedCache: [String: DetailedListing] = [:]
     var autoRefreshEnabled = true
@@ -59,7 +61,10 @@ final class ListingsViewModel {
     }
 
     var flipRows: [FlipOpportunity] {
-        listings
+        let minROI = Double(minROIStr.trimmingCharacters(in: .whitespaces))
+        let minProfit = Int(minProfitPerFlipStr.trimmingCharacters(in: .whitespaces))
+        
+        return listings
             .map { listing in
                 var opp = FlipOpportunity(listing: listing)
                 if let uuid = listing.item?.uuid {
@@ -67,7 +72,21 @@ final class ListingsViewModel {
                 }
                 return opp
             }
-            .filter { $0.netProfit != nil }
+            .filter { opp in
+                guard opp.netProfit != nil else { return false }
+                
+                // Filter by min ROI if specified
+                if let minRoi = minROI, let roi = opp.roi, roi < minRoi {
+                    return false
+                }
+                
+                // Filter by min profit per flip if specified
+                if let minProfitFlip = minProfit, let profit = opp.netProfit, profit < minProfitFlip {
+                    return false
+                }
+                
+                return true
+            }
             .sorted { lhs, rhs in
                 // Both have profit per minute - compare them directly
                 if let lpm = lhs.profitPerMinute, let rpm = rhs.profitPerMinute {
@@ -337,6 +356,8 @@ final class ListingsViewModel {
         maxBuyStubs = preset.maxBuyPrice.map(String.init) ?? ""
         minOverallStr = preset.minOverall.map(String.init) ?? ""
         maxOverallStr = preset.maxOverall.map(String.init) ?? ""
+        minROIStr = preset.minROI.map { String(format: "%.0f", $0) } ?? ""
+        minProfitPerFlipStr = preset.minProfitPerFlip.map(String.init) ?? ""
         Task { await loadAll() }
     }
 
@@ -348,6 +369,8 @@ final class ListingsViewModel {
         maxBuyStubs = ""
         minOverallStr = ""
         maxOverallStr = ""
+        minROIStr = ""
+        minProfitPerFlipStr = ""
         Task { await loadAll() }
     }
 

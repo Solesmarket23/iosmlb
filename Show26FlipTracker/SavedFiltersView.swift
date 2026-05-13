@@ -324,6 +324,8 @@ struct PresetEditSheet: View {
     @State private var minOverall: String = ""
     @State private var maxOverall: String = ""
     @State private var minProfitPerMinute: String = ""
+    @State private var minROI: String = ""
+    @State private var minProfitPerFlip: String = ""
     @State private var notificationsEnabled: Bool = false
 
     init(preset: FilterPreset?, onSave: @escaping (FilterPreset) -> Void, metaData: MetaData?) {
@@ -339,6 +341,8 @@ struct PresetEditSheet: View {
         _minOverall = State(initialValue: preset?.minOverall.map(String.init) ?? "")
         _maxOverall = State(initialValue: preset?.maxOverall.map(String.init) ?? "")
         _minProfitPerMinute = State(initialValue: preset?.minProfitPerMinute.map { String(format: "%.0f", $0) } ?? "")
+        _minROI = State(initialValue: preset?.minROI.map { String(format: "%.0f", $0) } ?? "")
+        _minProfitPerFlip = State(initialValue: preset?.minProfitPerFlip.map(String.init) ?? "")
         _notificationsEnabled = State(initialValue: preset?.notificationsEnabled ?? false)
     }
 
@@ -500,8 +504,10 @@ struct PresetEditSheet: View {
 
     private var profitPerMinuteSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            sectionHeader("PROFIT PER MINUTE")
-            styledField(placeholder: "Min (e.g. 100)", text: $minProfitPerMinute)
+            sectionHeader("PROFIT FILTERS")
+            styledField(placeholder: "Min Profit/Min (e.g. 100)", text: $minProfitPerMinute)
+            styledField(placeholder: "Min ROI % (e.g. 10)", text: $minROI)
+            styledField(placeholder: "Min Profit/Flip (e.g. 500)", text: $minProfitPerFlip)
         }
     }
 
@@ -577,6 +583,8 @@ struct PresetEditSheet: View {
             minOverall: Int(minOverall),
             maxOverall: Int(maxOverall),
             minProfitPerMinute: Double(minProfitPerMinute),
+            minROI: Double(minROI),
+            minProfitPerFlip: Int(minProfitPerFlip),
             notificationsEnabled: notificationsEnabled
         )
         onSave(newPreset)

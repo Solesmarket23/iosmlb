@@ -43,6 +43,7 @@ struct FilterSheetView: View {
                         seriesSection
                         priceSection
                         overallSection
+                        profitSection
                         Spacer(minLength: 20)
                     }
                     .padding(.horizontal, 20)
@@ -138,6 +139,18 @@ struct FilterSheetView: View {
                 Text("—")
                     .foregroundStyle(Color.textTertiary)
                 styledField(placeholder: "Max", text: $model.maxOverallStr)
+            }
+        }
+    }
+    
+    private var profitSection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            sectionHeader("PROFIT FILTERS")
+            VStack(spacing: 12) {
+                HStack(spacing: 12) {
+                    styledField(placeholder: "Min ROI %", text: $model.minROIStr)
+                    styledField(placeholder: "Min Profit/Flip", text: $model.minProfitPerFlipStr)
+                }
             }
         }
     }
@@ -256,6 +269,8 @@ struct FilterSheetView: View {
                     model.maxBuyStubs = ""
                     model.minOverallStr = ""
                     model.maxOverallStr = ""
+                    model.minROIStr = ""
+                    model.minProfitPerFlipStr = ""
                 }
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(Color.textSecondary)
@@ -315,6 +330,8 @@ struct FilterSheetView: View {
             maxBuyPrice: Int(model.maxBuyStubs),
             minOverall: Int(model.minOverallStr),
             maxOverall: Int(model.maxOverallStr),
+            minROI: Double(model.minROIStr),
+            minProfitPerFlip: Int(model.minProfitPerFlipStr),
             notificationsEnabled: false
         )
         presetManager.savePreset(preset)

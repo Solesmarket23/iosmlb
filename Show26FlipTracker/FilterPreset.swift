@@ -12,6 +12,8 @@ struct FilterPreset: Identifiable, Codable, Equatable {
     var minOverall: Int?
     var maxOverall: Int?
     var minProfitPerMinute: Double?
+    var minROI: Double?
+    var minProfitPerFlip: Int?
     var notificationsEnabled: Bool
 
     init(
@@ -25,6 +27,8 @@ struct FilterPreset: Identifiable, Codable, Equatable {
         minOverall: Int? = nil,
         maxOverall: Int? = nil,
         minProfitPerMinute: Double? = nil,
+        minROI: Double? = nil,
+        minProfitPerFlip: Int? = nil,
         notificationsEnabled: Bool = false
     ) {
         self.id = id
@@ -37,6 +41,8 @@ struct FilterPreset: Identifiable, Codable, Equatable {
         self.minOverall = minOverall
         self.maxOverall = maxOverall
         self.minProfitPerMinute = minProfitPerMinute
+        self.minROI = minROI
+        self.minProfitPerFlip = minProfitPerFlip
         self.notificationsEnabled = notificationsEnabled
     }
 
@@ -47,6 +53,8 @@ struct FilterPreset: Identifiable, Codable, Equatable {
         if let max = maxBuyPrice { parts.append("≤\(max) buy") }
         if let min = minOverall { parts.append("≥\(min) OVR") }
         if let minPPM = minProfitPerMinute { parts.append("≥\(Int(minPPM))/min") }
+        if let minRoi = minROI { parts.append("≥\(Int(minRoi))% ROI") }
+        if let minProfit = minProfitPerFlip { parts.append("≥\(minProfit) profit") }
         return parts.isEmpty ? "No filters" : parts.joined(separator: " · ")
     }
 
@@ -64,9 +72,23 @@ struct FilterPreset: Identifiable, Codable, Equatable {
         // First check basic listing criteria
         if !matches(opportunity.listing) { return false }
         
-        // Then check profit per minute if specified
+        // Check profit per minute if specified
         if let minPPM = minProfitPerMinute {
             guard let ppm = opportunity.profitPerMinute, ppm >= minPPM else {
+                return false
+            }
+        }
+        
+        // Check ROI if specified
+        if let minRoi = minROI {
+            guard let roi = opportunity.roi, roi >= minRoi else {
+                return false
+            }
+        }
+        
+        // Check min profit per flip if specified
+        if let minProfit = minProfitPerFlip {
+            guard let profit = opportunity.netProfit, profit >= minProfit else {
                 return false
             }
         }

@@ -19,6 +19,9 @@ struct FlipsView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     Spacer().frame(height: 130)
+                    if let presetName = model.activePresetName {
+                        activeFilterBanner(presetName: presetName)
+                    }
                     rarityChips
                     content
                     pagination
@@ -339,5 +342,51 @@ struct FlipsView: View {
 
     private var pagination: some View {
         EmptyView()
+    }
+    
+    // MARK: - Active Filter Banner
+    
+    private func activeFilterBanner(presetName: String) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: "line.3.horizontal.decrease.circle.fill")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(Color.appAccent)
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text("'\(presetName)' preset active")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(Color.white)
+                
+                let count = model.flipRows.count
+                Text("\(count) \(count == 1 ? "result" : "results") match your filters")
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundStyle(Color.textSecondary)
+            }
+            
+            Spacer()
+            
+            Button {
+                Haptics.light()
+                model.resetFilters()
+                Task { await model.loadAll() }
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .font(.system(size: 18))
+                    .foregroundStyle(Color.textTertiary)
+            }
+            .buttonStyle(PressScaleEffect())
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(Color.appAccent.opacity(0.12))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .strokeBorder(Color.appAccent.opacity(0.3), lineWidth: 1)
+                )
+        )
+        .padding(.horizontal, 16)
+        .padding(.bottom, 12)
     }
 }

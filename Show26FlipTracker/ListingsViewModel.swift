@@ -18,6 +18,7 @@ final class ListingsViewModel {
     var maxOverallStr: String = ""
     var minROIStr: String = ""
     var minProfitPerFlipStr: String = ""
+    var activePresetName: String?
     var metaData: MetaData?
     var detailedCache: [String: DetailedListing] = [:]
     var autoRefreshEnabled = true
@@ -358,6 +359,7 @@ final class ListingsViewModel {
         maxOverallStr = preset.maxOverall.map(String.init) ?? ""
         minROIStr = preset.minROI.map { String(format: "%.0f", $0) } ?? ""
         minProfitPerFlipStr = preset.minProfitPerFlip.map(String.init) ?? ""
+        activePresetName = preset.name
         Task { await loadAll() }
     }
 
@@ -371,6 +373,7 @@ final class ListingsViewModel {
         maxOverallStr = ""
         minROIStr = ""
         minProfitPerFlipStr = ""
+        activePresetName = nil
         Task { await loadAll() }
     }
 
